@@ -1,15 +1,23 @@
-use std::io;
+use std::{cmp::Ordering, io};
 
 use rand::{thread_rng, Rng};
 
 fn main() {
     println!("Guess the number!");
 
-    let _secret_number = generate_random_number();
+    let secret_number = generate_random_number();
 
     let guess = read_guess();
 
     println!("You guessed: {guess}");
+
+    let result = match guess.cmp(&secret_number) {
+        Ordering::Less => "Too small",
+        Ordering::Greater => "Too big",
+        Ordering::Equal => "You win",
+    };
+
+    println!("{result}!");
 }
 
 fn generate_random_number() -> u32 {
@@ -20,9 +28,17 @@ fn generate_random_number() -> u32 {
     secret_number
 }
 
-fn read_guess() -> String {
-    println!("Please input your guess.");
+fn read_guess() -> u32 {
+    println!("Please input your guess.");    
+    let guess = read_line();
     
+    guess
+        .trim()
+        .parse()
+        .expect("Please type a number!")
+}
+
+fn read_line() -> String {
     let mut guess = String::new();
     
     io::stdin()
