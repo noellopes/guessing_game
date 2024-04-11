@@ -5,19 +5,26 @@ use rand::{thread_rng, Rng};
 fn main() {
     println!("Guess the number!");
 
-    let secret_number = generate_random_number();
+    guess_number(generate_random_number());
+}
 
-    let guess = read_guess();
+fn guess_number(secret_number: u32) {
+    let mut attempts: u32 = 0;
+    loop {
+        attempts += 1;
+        println!("Attempt {attempts}");
 
-    println!("You guessed: {guess}");
+        let guess = read_guess();
 
-    let result = match guess.cmp(&secret_number) {
-        Ordering::Less => "Too small",
-        Ordering::Greater => "Too big",
-        Ordering::Equal => "You win",
-    };
-
-    println!("{result}!");
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("The number {guess} is too small!"),
+            Ordering::Greater => println!("The number {guess} is too big!"),
+            Ordering::Equal => {
+                println!("You win, after {attempts} attempts!");
+                break;
+            },
+        };
+    }
 }
 
 fn generate_random_number() -> u32 {
