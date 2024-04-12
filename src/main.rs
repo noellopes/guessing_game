@@ -5,10 +5,15 @@ use rand::{thread_rng, Rng};
 mod utils;
 use utils::read_u32;
 
+const MIN: u32 = 1;
+const MAX: u32 = 100;
+
 fn main() {
     println!("Guess the number!");
 
-    guess_number(generate_random_number());
+    let secret_number = thread_rng().gen_range(MIN..=MAX);
+
+    guess_number(secret_number);
 }
 
 fn guess_number(secret_number: u32) {
@@ -17,7 +22,7 @@ fn guess_number(secret_number: u32) {
         attempts += 1;
         println!("Attempt {attempts}");
 
-        let guess = read_u32("Please input your guess:");
+        let guess = read_u32("Please input your guess:", MIN, MAX);
 
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("The number {guess} is too small!"),
@@ -28,12 +33,4 @@ fn guess_number(secret_number: u32) {
             },
         };
     }
-}
-
-fn generate_random_number() -> u32 {
-    let secret_number = thread_rng().gen_range(1..=100);
-
-    println!("The secret number is: {secret_number}");
-
-    secret_number
 }

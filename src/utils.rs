@@ -1,15 +1,20 @@
 use std::io;
 
-pub fn read_u32(prompt: &str) -> u32 {
+pub fn read_u32(prompt: &str, min: u32, max: u32) -> u32 {
     loop {
         println!("{prompt}");
         let number = read_line();
         let number = number.trim();
 
-        match number.parse() {
-            Ok(num) => return num,
-            Err(_) => println!("The value '{number}' is not a number. Please input a number!"),
-        };
+        if let Ok(num) = number.parse() {
+            if num >= min && num <= max {
+                return num;
+            } else {
+                println!("Invalid number. Please input a number between {min} and {max}!");
+            }
+        } else {
+            println!("The value '{number}' is not a number. Please input a number!");
+        }
     }   
 }
 
