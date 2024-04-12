@@ -1,6 +1,9 @@
-use std::{cmp::Ordering, io};
+use std::cmp::Ordering;
 
 use rand::{thread_rng, Rng};
+
+mod utils;
+use utils::read_u32;
 
 fn main() {
     println!("Guess the number!");
@@ -14,7 +17,7 @@ fn guess_number(secret_number: u32) {
         attempts += 1;
         println!("Attempt {attempts}");
 
-        let guess = read_guess();
+        let guess = read_u32("Please input your guess:");
 
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("The number {guess} is too small!"),
@@ -33,24 +36,4 @@ fn generate_random_number() -> u32 {
     println!("The secret number is: {secret_number}");
 
     secret_number
-}
-
-fn read_guess() -> u32 {
-    println!("Please input your guess.");    
-    let guess = read_line();
-    
-    guess
-        .trim()
-        .parse()
-        .expect("Please type a number!")
-}
-
-fn read_line() -> String {
-    let mut guess = String::new();
-    
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
-
-    guess
 }
